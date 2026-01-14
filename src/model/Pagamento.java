@@ -17,14 +17,14 @@ public class Pagamento {
     }
 
     public Pagamento(int id, int matriculaId, double valor, String formaPagamento,
-        String status, LocalDate dataVencimmento, LocalDate dataPagmento){
+        String status, LocalDate dataVencimento, LocalDate dataPagamento){
             this.id = id;
             this.matriculaId = matriculaId;
             this.valor = valor;
             this.formaPagamento = formaPagamento;
             this.status = status;
-            this.dataVencimento = dataVencimmento;
-            this.dataPagamento = dataPagmento;
+            this.dataVencimento = dataVencimento;
+            this.dataPagamento = dataPagamento;
     }
 
     public int getId(){
@@ -59,4 +59,27 @@ public class Pagamento {
         this.formaPagamento = formaPagamento;
     }
 
+    public String getStatus(){
+        return status;
+    }
+
+    public void setStatus(String status){
+        this.status = status;
+    }
+
+    public LocalDate getDataVencimento(){
+        return dataVencimento;
+    }
+
+    public void setDataVencimento(LocalDate dataVencimento){
+        this.dataVencimento = dataVencimento;
+    }
+
+    public LocalDate getDataPagamento(){
+        return dataPagamento;
+    }
+
+    public void setDataPagamento(LocalDate dataPagamento){
+        this.dataPagamento = dataPagamento;
+    }
 }
