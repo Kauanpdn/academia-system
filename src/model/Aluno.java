@@ -6,7 +6,6 @@ public class Aluno {
     
     private int id;
     private String nome;
-    private String cpf;
     private String telefone;
     private String email;
     private LocalDate dataNascimento;
@@ -16,10 +15,9 @@ public class Aluno {
 
     }
 
-    public Aluno(int id, String nome, String cpf, String telefone, String email, LocalDate dataNascimento, String status){
+    public Aluno(int id, String nome, String telefone, String email, LocalDate dataNascimento, String status){
         this.id = id;
         this.nome = nome;
-        this.cpf = cpf;
         this.telefone = telefone;
         this.email = email;
         this.dataNascimento = dataNascimento;
@@ -40,14 +38,6 @@ public class Aluno {
 
     public void setNome(String nome){
         this.nome = nome;
-    }
-
-    public String getCpf(){
-        return cpf;
-    }
-
-    public void setCpf(String cpf){
-        this.cpf = cpf;
     }
 
     public String getTelefone(){
@@ -87,7 +77,6 @@ public class Aluno {
         return "Aluno{" +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
-                ", cpf='" + cpf + '\'' +
                 ", status='" + status + '\'' +
                 '}';
     }
