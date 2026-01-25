@@ -21,6 +21,8 @@ public class PlanoDao {
             stmt.setDouble(2, plano.getValor());
             stmt.setInt(3, plano.getDuracaoMeses());
             stmt.setString(4, plano.getDescricao());
+
+            stmt.executeUpdate();
         } catch (Exception e) {
             throw new RuntimeException("Erro ao salvar plano! ", e);
         }
