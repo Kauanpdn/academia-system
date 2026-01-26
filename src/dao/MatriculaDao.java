@@ -6,11 +6,11 @@ import config.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Date;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 //CADASTRAR MATRÍCULA
 public class MatriculaDao {
@@ -58,6 +58,76 @@ public class MatriculaDao {
         }
 
         return matricula;
+    }
 
+    // LISTA POR ALUNO
+    public List<Matricula> listarPorAluno(int alunoId) {
+        List<Matricula> matriculas = new ArrayList<>();
+
+        String sql = "SELECT * FROM matricula WHERE alunoId = ? ";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, alunoId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Matricula m = new Matricula();
+                m.setId(rs.getInt("id"));
+                m.setAlunoId(rs.getInt("alunoId"));
+                m.setPlanoId(rs.getInt("planoId"));
+                m.setDataFim(rs.getDate("dataInicio").toLocalDate());
+                m.setDataFim(rs.getDate("dataFim").toLocalDate());
+                m.setStatus(rs.getString("status"));
+                m.setValorContratado(rs.getDouble("valorContratado"));
+
+                matriculas.add(m);
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao listar por alunos! ", e);
+        }
+        return matriculas;
+    }
+
+    // UPDATE COMPLETO
+    public void atualizar(Matricula matricula) {
+        String sql = "UPDATE matricula SET alunoId = ?, planoId = ?, dataInicio = ?, dataFim = ?, status = ?, valorContratado = ? ";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, matricula.getAlunoId());
+            stmt.setInt(2, matricula.getPlanoId());
+            stmt.setDate(3, Date.valueOf(matricula.getDataInicio()));
+            stmt.setDate(4, Date.valueOf(matricula.getDataFim()));
+            stmt.setString(5, matricula.getStatus());
+            stmt.setDouble(6, matricula.getValorContratado());
+
+            stmt.executeUpdate();
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao atualizar matrícula ", e);
+        }
+    }
+
+    // UPDATE ESPECÍFICO: STATUS
+    public void atualizarStatus(int id, String status) {
+        String sql = "UPDATE matricula set status = ? WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, status);
+            stmt.setInt(2, id);
+
+            stmt.executeUpdate();
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao atualizar matrícula ", e);
+        }
+    }
+
+    // CANCELAR
+    public void cancelar(int id) {
+        atualizarStatus(id, "CANCELADA");
     }
 }

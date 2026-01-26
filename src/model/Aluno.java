@@ -3,7 +3,7 @@ package model;
 import java.time.LocalDate;
 
 public class Aluno {
-    
+
     private int id;
     private String nome;
     private String telefone;
@@ -11,11 +11,11 @@ public class Aluno {
     private LocalDate dataNascimento;
     private String status;
 
-    public Aluno(){
+    public Aluno() {
 
     }
 
-    public Aluno(int id, String nome, String telefone, String email, LocalDate dataNascimento, String status){
+    public Aluno(int id, String nome, String telefone, String email, LocalDate dataNascimento, String status) {
         this.id = id;
         this.nome = nome;
         this.telefone = telefone;
@@ -24,51 +24,51 @@ public class Aluno {
         this.status = status;
     }
 
-    public int getId(){
+    public int getId() {
         return id;
     }
 
-    public void setId(int id){
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getNome(){
+    public String getNome() {
         return nome;
     }
 
-    public void setNome(String nome){
+    public void setNome(String nome) {
         this.nome = nome;
     }
 
-    public String getTelefone(){
+    public String getTelefone() {
         return telefone;
     }
 
-    public void setTelefone(String telefone){
+    public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email){
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public LocalDate getDataNascimento(){
+    public LocalDate getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(LocalDate dataNascimento){
+    public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
-    public String getStatus(){
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status){
+    public void setStatus(String status) {
         this.status = status;
     }
 

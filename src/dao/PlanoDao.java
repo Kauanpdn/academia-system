@@ -1,4 +1,5 @@
 package dao;
+
 import model.Plano;
 
 import config.DatabaseConnection;
@@ -10,13 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlanoDao {
-    
-    // INSERT 
-    public void salvar(Plano plano){
+
+    // INSERT
+    public void salvar(Plano plano) {
 
         String sql = "INSERT INTO plano (nome,valor,duracaoMeses,descricao) " + " VALUES(?,?,?,?) ";
 
-        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)){
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, plano.getNome());
             stmt.setDouble(2, plano.getValor());
             stmt.setInt(3, plano.getDuracaoMeses());
@@ -28,16 +30,17 @@ public class PlanoDao {
         }
     }
 
-    //SELECT FOR ID
-    public Plano buscarPorId(int id){
-        String sql =  "SELECT * FROM plano WHERE id = ?";
+    // SELECT FOR ID
+    public Plano buscarPorId(int id) {
+        String sql = "SELECT * FROM plano WHERE id = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)){
-            
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
 
-            if (rs.next()){
+            if (rs.next()) {
                 Plano plano = new Plano();
                 plano.setId(rs.getInt("id"));
                 plano.setNome(rs.getString("nome"));
@@ -54,14 +57,14 @@ public class PlanoDao {
         }
     }
 
-    //SELECT ALL
-    public List<Plano> listarTodos(){
+    // SELECT ALL
+    public List<Plano> listarTodos() {
         String sql = "SELECT * FROM plano";
         List<Plano> planos = new ArrayList<>();
 
-        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);
-                ResultSet rs = stmt.executeQuery();
-    ){
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery();) {
             while (rs.next()) {
                 Plano plano = new Plano();
                 plano.setId(rs.getInt("id"));
@@ -72,23 +75,24 @@ public class PlanoDao {
             }
 
             return planos;
-            
+
         } catch (Exception e) {
             throw new RuntimeException("Erro ao listar alunos ", e);
         }
     }
 
-    //DELETE
-    public void deletar(int id){
+    // DELETE
+    public void deletar(int id) {
         String sql = "DELETE FROM plano WHERE id = ?";
 
-            try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)){
-                
-                stmt.setInt(1, id);
-                stmt.executeUpdate();
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            } catch (Exception e) {
-                throw new RuntimeException("Erro ao deletar plano ", e);
-            }
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao deletar plano ", e);
         }
-    }    
+    }
+}

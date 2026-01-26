@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class AlunoDao {
 
     // INSERT
@@ -59,63 +58,65 @@ public class AlunoDao {
     }
 
     // SELECT ALL
-    public List<Aluno> listarTodos(){
+    public List<Aluno> listarTodos() {
 
-            String sql = "SELECT * FROM aluno";
-            List<Aluno> alunos = new ArrayList<>();
+        String sql = "SELECT * FROM aluno";
+        List<Aluno> alunos = new ArrayList<>();
 
-            try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);
-                    ResultSet rs = stmt.executeQuery()
-        ){
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()) {
 
-                while (rs.next()) {
-                    Aluno aluno = new Aluno();
+            while (rs.next()) {
+                Aluno aluno = new Aluno();
                 aluno.setId(rs.getInt("id"));
                 aluno.setNome(rs.getString("nome"));
                 aluno.setEmail(rs.getString("email"));
                 aluno.setTelefone(rs.getString("telefone"));
                 aluno.setDataNascimento(
                         rs.getDate("data_nascimento").toLocalDate());
-                }
-            
-                
-                return alunos;
-                
-            } catch (Exception e) {
-                throw new RuntimeException("Erro ao listar alunos ", e);
             }
+
+            return alunos;
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao listar alunos ", e);
         }
+    }
 
-        public void atualizar(Aluno aluno){
+    // UPDATE
+    public void atualizar(Aluno aluno) {
 
-            String sql = "UPDATE aluno set nome = ?, email = ?, telefone = ?, data_nascimento = ? " + "WHERE id = ? ";
+        String sql = "UPDATE aluno set nome = ?, email = ?, telefone = ?, data_nascimento = ? " + " WHERE id = ? ";
 
-            try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)){
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, aluno.getNome());
             stmt.setString(2, aluno.getEmail());
             stmt.setString(3, aluno.getTelefone());
             stmt.setDate(4, java.sql.Date.valueOf(aluno.getDataNascimento()));
-            
+
             stmt.executeUpdate();
 
-            } catch (Exception e) {
-                throw new RuntimeException("Erro ao atualizar aluno ", e);
-            }
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao atualizar aluno ", e);
         }
+    }
 
-        // DELETE
-        public void deletar(int id){
+    // DELETE
+    public void deletar(int id) {
 
-            String sql = "DELETE FROM aluno WHERE id = ?";
+        String sql = "DELETE FROM aluno WHERE id = ?";
 
-            try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)){
-                
-                stmt.setInt(1, id);
-                stmt.executeUpdate();
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            } catch (Exception e) {
-                throw new RuntimeException("Erro ao deletar aluno ", e);
-            }
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao deletar aluno ", e);
         }
+    }
 }
