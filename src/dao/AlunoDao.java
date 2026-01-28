@@ -20,7 +20,11 @@ public class AlunoDao {
             stmt.setString(1, aluno.getNome());
             stmt.setString(2, aluno.getEmail());
             stmt.setString(3, aluno.getTelefone());
-            stmt.setDate(4, java.sql.Date.valueOf(aluno.getDataNascimento()));
+            if (aluno.getDataNascimento() != null) {
+                stmt.setDate(4, java.sql.Date.valueOf(aluno.getDataNascimento()));
+            } else {
+                stmt.setNull(4, java.sql.Types.DATE);
+            }
 
             stmt.executeUpdate();
 
