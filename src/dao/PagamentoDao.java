@@ -15,24 +15,31 @@ import java.util.ArrayList;
 public class PagamentoDao {
     // CREAT
     public void cadastrar(Pagamento pagamento) {
-        String sql = "INSERT INTO pagamento (matriculaId,valor,formaPagamento,status,dataVencimento,dataPagamento) VALUES (?,?,?,?,?,?)";
+        String sql = "INSERT INTO pagamento (matriculaId, valor, formaPagamento, status, dataVencimento, dataPagamento) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setInt(1, pagamento.getMatriculaId());
             stmt.setDouble(2, pagamento.getValor());
             stmt.setString(3, pagamento.getFormaPagamento());
             stmt.setString(4, pagamento.getStatus());
-            stmt.setDate(5, Date.valueOf(pagamento.getDataVencimento()));
 
-            if (pagamento != null) {
-                stmt.setDate(6, Date.valueOf(pagamento.getDataPagamento()));
+            // Data de Vencimento (sempre deve existir)
+            stmt.setDate(5, java.sql.Date.valueOf(pagamento.getDataVencimento()));
+
+            // O SEGREDO ESTÁ AQUI: Testar a data, não o objeto pagamento
+            if (pagamento.getDataPagamento() != null) {
+                stmt.setDate(6, java.sql.Date.valueOf(pagamento.getDataPagamento()));
+            } else {
+                stmt.setNull(6, java.sql.Types.DATE);
             }
 
-            stmt.executeQuery();
+            // MUDANÇA ESSENCIAL: executeUpdate para INSERT
+            stmt.executeUpdate();
 
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao cadastra pagamento! ", e);
+            throw new RuntimeException("Erro ao cadastrar pagamento!", e);
         }
     }
 

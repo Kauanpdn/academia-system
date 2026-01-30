@@ -15,7 +15,7 @@ public class PlanoDao {
     // INSERT
     public void salvar(Plano plano) {
 
-        String sql = "INSERT INTO plano (nome,valor,duracaoMeses,descricao) " + " VALUES(?,?,?,?) ";
+        String sql = "INSERT INTO plano (nome,valor,duracaoMeses,descricao) VALUES(?,?,?,?) ";
 
         try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
