@@ -109,6 +109,27 @@ public class MatriculaDao {
         }
     }
 
+    public boolean existeMatriculaAtiva(int alunoId) {
+
+        String sql = "SELECT COUNT(*) FROM matricula WHERE aluno_id = ? AND status = 'ATIVA'";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, alunoId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+
+            return false;
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao verificar matrícula ativa", e);
+        }
+    }
+
     // UPDATE ESPECÍFICO: STATUS
     public void atualizarStatus(int id, String status) {
         String sql = "UPDATE matricula set status = ? WHERE id = ?";

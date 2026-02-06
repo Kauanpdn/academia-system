@@ -18,6 +18,49 @@ public class AlunoService {
 
         validarAluno(aluno);
 
+        if (aluno.getStatus() == null || aluno.getStatus().isBlank()) {
+            aluno.setStatus("ATIVO");
+        }
+
+        alunoDao.salvar(aluno);
+
+    }
+
+    public void atualizarAluno(Aluno aluno){
+        
+        if (aluno.getId() <= 0) {
+            throw new RuntimeException("ID do aluno inválido para atualização");
+        }
+
+        validarAluno(aluno);
+
+        alunoDao.atualizar(aluno);
+    }
+
+    public void desativarAluno(int alunoId){
+        Aluno aluno = alunoDao.buscarPorId(alunoId);
+
+        if (aluno == null) {
+            throw new RuntimeException("Aluno não encontrado");
+        }
+
+        if ("INATIVO".equals(aluno.getStatus())) {
+            throw new RuntimeException("Aluno já está inativo");
+        }
+
+        aluno.setStatus("INATIVO");
+        alunoDao.atualizar(aluno);
+    }
+
+    public void ativarAluno(int alunoId){
+        Aluno aluno = alunoDao.buscarPorId(alunoId);
+
+        if (aluno == null) {
+            throw new RuntimeException("Aluno não encontrado");
+        }
+
+        aluno.setStatus("ATIVO");
+        alunoDao.atualizar(aluno);
     }
 
     private void validarAluno(Aluno aluno) {

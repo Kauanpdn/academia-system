@@ -81,6 +81,27 @@ public class PlanoDao {
         }
     }
 
+    // UPDATE
+    public void atualizar(Plano plano) {
+
+        String sql = "UPDATE plano SET nome = ?, valor = ?, duracaoMeses = ?, descricao = ? WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, plano.getNome());
+            stmt.setDouble(2, plano.getValor());
+            stmt.setInt(3, plano.getDuracaoMeses());
+            stmt.setString(4, plano.getDescricao());
+            stmt.setInt(5, plano.getId());
+
+            stmt.executeUpdate();
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao atualizar plano!", e);
+        }
+    }
+
     // DELETE
     public void deletar(int id) {
         String sql = "DELETE FROM plano WHERE id = ?";
