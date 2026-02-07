@@ -72,6 +72,7 @@ public class PlanoDao {
                 plano.setValor(rs.getDouble("valor"));
                 plano.setDuracaoMeses(rs.getInt("duracaoMeses"));
                 plano.setDescricao(rs.getString("descricao"));
+                planos.add(plano);
             }
 
             return planos;

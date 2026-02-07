@@ -14,21 +14,23 @@ import java.util.List;
 //CADASTRAR MATRÍCULA
 public class MatriculaDao {
     public void cadastrar(Matricula matricula) {
-        String sql = "INSERT INTO matricula (alunoId,planoId,dataInicio,dataFim,status,valorContratado)"
-                + " VALUES (?,?,?,?,?,?)";
+        String sql = "INSERT INTO matricula (alunoId, planoId, dataInicio, dataFim, status, valorContratado) " +
+                "VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setInt(1, matricula.getAlunoId());
             stmt.setInt(2, matricula.getPlanoId());
-            stmt.setDate(3, Date.valueOf(matricula.getDataInicio()));
-            stmt.setDate(4, Date.valueOf(matricula.getDataFim()));
+            stmt.setDate(3, java.sql.Date.valueOf(matricula.getDataInicio()));
+            stmt.setDate(4, java.sql.Date.valueOf(matricula.getDataFim()));
             stmt.setString(5, matricula.getStatus());
             stmt.setDouble(6, matricula.getValorContratado());
+
             stmt.executeUpdate();
 
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao cadastra matrícula! ", e);
+            throw new RuntimeException("Erro ao cadastrar matrícula!", e);
         }
     }
 
@@ -91,7 +93,7 @@ public class MatriculaDao {
 
     // UPDATE COMPLETO
     public void atualizar(Matricula matricula) {
-        String sql = "UPDATE matricula SET alunoId = ?, planoId = ?, dataInicio = ?, dataFim = ?, status = ?, valorContratado = ? ";
+        String sql = "UPDATE matricula SET alunoId = ?, planoId = ?, dataInicio = ?, dataFim = ?, status = ?, valorContratado = ?  WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {

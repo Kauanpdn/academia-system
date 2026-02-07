@@ -13,13 +13,15 @@ public class AlunoDao {
 
     // INSERT
     public void salvar(Aluno aluno) {
-        String sql = "INSERT INTO aluno (nome,email,telefone,data_nascimento) " + " VALUES (?,?,?,?) ";
+        String sql = "INSERT INTO aluno (nome,email,telefone,data_nascimento) VALUES (?,?,?,?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, aluno.getNome());
             stmt.setString(2, aluno.getEmail());
             stmt.setString(3, aluno.getTelefone());
+
             if (aluno.getDataNascimento() != null) {
                 stmt.setDate(4, java.sql.Date.valueOf(aluno.getDataNascimento()));
             } else {
@@ -29,7 +31,7 @@ public class AlunoDao {
             stmt.executeUpdate();
 
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao salvar aluno! ", e);
+            throw new RuntimeException("Erro ao salvar aluno!", e);
         }
     }
 
@@ -49,8 +51,12 @@ public class AlunoDao {
                 aluno.setNome(rs.getString("nome"));
                 aluno.setEmail(rs.getString("email"));
                 aluno.setTelefone(rs.getString("telefone"));
-                aluno.setDataNascimento(
-                        rs.getDate("data_nascimento").toLocalDate());
+
+                java.sql.Date data = rs.getDate("data_nascimento");
+                if (data != null) {
+                    aluno.setDataNascimento(data.toLocalDate());
+                }
+
                 return aluno;
             }
 
@@ -77,21 +83,27 @@ public class AlunoDao {
                 aluno.setNome(rs.getString("nome"));
                 aluno.setEmail(rs.getString("email"));
                 aluno.setTelefone(rs.getString("telefone"));
-                aluno.setDataNascimento(
-                        rs.getDate("data_nascimento").toLocalDate());
+
+                java.sql.Date data = rs.getDate("data_nascimento");
+                if (data != null) {
+                    aluno.setDataNascimento(data.toLocalDate());
+                }
+
+                // BUG QUE CAUSAVA A LISTA VIR VAZIA
+                alunos.add(aluno);
             }
 
             return alunos;
 
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao listar alunos ", e);
+            throw new RuntimeException("Erro ao listar alunos", e);
         }
     }
 
     // UPDATE
     public void atualizar(Aluno aluno) {
 
-        String sql = "UPDATE aluno set nome = ?, email = ?, telefone = ?, data_nascimento = ? " + " WHERE id = ? ";
+        String sql = "UPDATE aluno SET nome = ?, email = ?, telefone = ?, data_nascimento = ? WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -99,12 +111,19 @@ public class AlunoDao {
             stmt.setString(1, aluno.getNome());
             stmt.setString(2, aluno.getEmail());
             stmt.setString(3, aluno.getTelefone());
-            stmt.setDate(4, java.sql.Date.valueOf(aluno.getDataNascimento()));
+
+            if (aluno.getDataNascimento() != null) {
+                stmt.setDate(4, java.sql.Date.valueOf(aluno.getDataNascimento()));
+            } else {
+                stmt.setNull(4, java.sql.Types.DATE);
+            }
+
+            stmt.setInt(5, aluno.getId());
 
             stmt.executeUpdate();
 
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao atualizar aluno ", e);
+            throw new RuntimeException("Erro ao atualizar aluno", e);
         }
     }
 
@@ -120,7 +139,7 @@ public class AlunoDao {
             stmt.executeUpdate();
 
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao deletar aluno ", e);
+            throw new RuntimeException("Erro ao deletar aluno", e);
         }
     }
 }
